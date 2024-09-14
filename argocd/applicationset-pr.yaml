@@ -1,0 +1,36 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: charts
+  namespace: argocd
+spec:
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
+  generators:
+  - pullRequest:
+      github:
+        owner: Shaked
+        repo: playground
+        tokenRef:
+          secretName: github-token
+          key: token
+        labels:
+        - preview
+      requeueAfterSeconds: 1800
+  template:
+    metadata:
+      name: "{{ .branch }}-{{ .number }}"
+      labels:
+        key1: '{{ index .labels 0 }}'
+    spec:
+      project: "default"
+      source:
+        repoURL: "https://github.com/Shaked/playground.git"
+        targetRevision: '{{ .head_sha }}'
+        path: "charts"
+      destination:
+        server: "{{.url}}"
+        namespace: "{{ .branch }}-{{ .number }}"
+      syncPolicy:
+        syncOptions:
+        - CreateNamespace=true
