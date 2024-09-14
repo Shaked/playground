@@ -29,7 +29,7 @@ spec:
         targetRevision: '{{ .head_sha }}'
         path: "charts"
       destination:
-        server: https://kubernetes.default.svc
+        server: "https://kubernetes.default.svc"
         namespace: "{{ .branch }}-{{ .number }}"
       syncPolicy:
         syncOptions:
