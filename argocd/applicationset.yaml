@@ -10,10 +10,10 @@ spec:
     - matrix:
        generators:
         - git:
-          repoURL: https://github.com/Shaked/playground.git
-          revision: HEAD
-          directories:
-          - path: charts/*
+            repoURL: https://github.com/Shaked/playground.git
+            revision: HEAD
+            directories:
+            - path: charts/*
         - list:
             elements:
             - cluster: engineering-dev
