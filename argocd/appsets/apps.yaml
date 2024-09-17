@@ -24,9 +24,15 @@ spec:
         repoURL: https://github.com/Shaked/playground
         targetRevision: main
         path: "charts/apps/{{ index .path.segments 2 }}/{{ index .path.segments 3 }}"
+        helm:
+          releaseName: '{{ index .path.segments 2 }}-{{ index .path.segments 3 }}'
+          ignoreMissingValueFiles: true
+          valueFiles:
+          - 'values/common-{{ index .path.segments 2 }}.yaml'
+          - 'values/{{ index .path.segments 2 }}/{{.env}}/values.yaml'
       destination:
         server: "{{ .server }}"
-        namespace: argocd
+        namespace: "{{ index .path.segments 2 }}"
       syncPolicy:
         automated:
           prune: true
