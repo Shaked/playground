@@ -31,8 +31,8 @@ spec:
           releaseName: '{{ index .path.segments 2 }}'
           ignoreMissingValueFiles: true
           valueFiles:
-          - 'values/common-{{ index .path.segments 2 }}.yaml'
-          - 'values/{{ index .path.segments 2 }}/{{.name}}/values.yaml'
+          - '../../../values/common-{{ index .path.segments 2 }}.yaml'
+          - '../../../values/{{ index .path.segments 2 }}/{{.name}}/values.yaml'
       destination:
         server: "{{ .server }}"
         namespace: "{{ index .path.segments 2 }}"
