@@ -22,4 +22,4 @@ spec:
       targetRevision: main
   destination:
     namespace: argocd
-    name: in-cluster
+    name: dev04

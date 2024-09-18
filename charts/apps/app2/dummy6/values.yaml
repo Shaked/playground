@@ -13,6 +13,7 @@ image:
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: "dummy6bbb"
+releaseName: "dummy6bbb"
 
 serviceAccount:
   # Specifies whether a service account should be created

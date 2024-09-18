@@ -28,7 +28,7 @@ spec:
         targetRevision: main
         path: "charts/apps/{{ index .path.segments 2 }}/{{ index .path.segments 3 }}"
         helm:
-          # releaseName: '{{ index .path.segments 2 }}-{{ index .path.segments 3 }}'
+          releaseName: '{{ .releaseName | default (printf "%s-%s" (index .path.segments 2) (index .path.segments 3)) }}'
           ignoreMissingValueFiles: true
           valueFiles:
           - '../../../values/common-{{ index .path.segments 2 }}.yaml'
