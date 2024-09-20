@@ -30,6 +30,9 @@ spec:
         helm:
           releaseName: '{{ dig "releaseName" (printf "%s" (index .path.segments 2)) . }}'
           ignoreMissingValueFiles: true
+          parameters:
+          - name: region
+            value: '{{ index .metadata.labels "region" }}'
           valueFiles:
           - '../../../values/common-{{ index .path.segments 2 }}.yaml'
           - '../../../values/{{ index .path.segments 2 }}/{{.name}}/values.yaml'
