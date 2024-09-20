@@ -19,9 +19,6 @@ spec:
             matchLabels:
               argocd.argoproj.io/secret-type: cluster
               argocd.argoproj.io/product-{{ index .path.segments 2 }}: "true"
-          values:
-            region: '{{ index .metadata.labels "region" }}'
-            clusterName: '{{ .name }}'
   template:
     metadata:
       name: '{{ .name }}-apps-{{ index .path.segments 2 }}-{{ index .path.segments 3 }}'
@@ -36,7 +33,7 @@ spec:
           ignoreMissingValueFiles: true
           parameters:
           - name: region
-            value: '{{ .values.region }}'
+            value: '{{ index .metadata.labels "region" }}'
           valueFiles:
           - '../../../values/common-{{ index .path.segments 2 }}.yaml'
           - '../../../values/{{ index .path.segments 2 }}/{{.name}}/values.yaml'
