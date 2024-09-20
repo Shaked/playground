@@ -28,7 +28,7 @@ spec:
         targetRevision: main
         path: "charts/infra/{{ index .path.segments 2 }}"
         helm:
-          releaseName: '{{ index .path.segments 2 }}'
+          releaseName: '{{ dig "releaseName" (printf "%s" (index .path.segments 2)) . }}'
           ignoreMissingValueFiles: true
           valueFiles:
           - '../../../values/common-{{ index .path.segments 2 }}.yaml'
