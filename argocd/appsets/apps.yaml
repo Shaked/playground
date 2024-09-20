@@ -9,15 +9,16 @@ spec:
   generators:
   - matrix:
       generators:
+      - clusters:
+          selector:
+            matchLabels:
+              argocd.argoproj.io/secret-type: cluster
+              argocd.argoproj.io/product-{{ index .path.segments 2 }}: "true"
       - git:
           repoURL: https://github.com/Shaked/playground
           revision: main
           files:
             - path: charts/apps/**/values.yaml
-      - clusters:
-          selector:
-            matchLabels:
-              argocd.argoproj.io/secret-type: cluster
   template:
     metadata:
       name: '{{ .name }}-apps-{{ index .path.segments 2 }}-{{ index .path.segments 3 }}'
