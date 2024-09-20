@@ -35,7 +35,8 @@ spec:
           releaseName: '{{ dig "releaseName" (printf "%s-%s" (index .path.segments 2) (index .path.segments 3)) . }}'
           ignoreMissingValueFiles: true
           parameters:
-            region: '{{ .values.region }}'
+          - name: region
+            value: '{{ .values.region }}'
           valueFiles:
           - '../../../values/common-{{ index .path.segments 2 }}.yaml'
           - '../../../values/{{ index .path.segments 2 }}/{{.name}}/values.yaml'
