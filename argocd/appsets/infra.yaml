@@ -9,15 +9,15 @@ spec:
   generators:
   - matrix:
       generators:
-      - clusters:
-          selector:
-            matchLabels:
-              argocd.argoproj.io/secret-type: cluster
       - git:
           repoURL: https://github.com/Shaked/playground
           revision: main
           files:
             - path: charts/infra/**/values.yaml
+      - clusters:
+          selector:
+            matchLabels:
+              argocd.argoproj.io/secret-type: cluster
   template:
     metadata:
       name: '{{ .name }}-infra-{{ index .path.segments 2}}'
