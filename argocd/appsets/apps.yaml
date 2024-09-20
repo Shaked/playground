@@ -15,12 +15,13 @@ spec:
           files:
             - path: charts/apps/**/values.yaml
       - clusters:
-          values:
-            region: '{{ .metadata.labels.region }}'
           selector:
             matchLabels:
               argocd.argoproj.io/secret-type: cluster
               argocd.argoproj.io/product-{{ index .path.segments 2 }}: "true"
+          values:
+            region: '{{ index .metadata.labels "region" }}'
+            clusterName: '{{ .name }}'
   template:
     metadata:
       name: '{{ .name }}-apps-{{ index .path.segments 2 }}-{{ index .path.segments 3 }}'
@@ -33,7 +34,7 @@ spec:
         helm:
           releaseName: '{{ dig "releaseName" (printf "%s-%s" (index .path.segments 2) (index .path.segments 3)) . }}'
           ignoreMissingValueFiles: true
-          valuesObject:
+          parameters:
             region: '{{ .values.region }}'
           valueFiles:
           - '../../../values/common-{{ index .path.segments 2 }}.yaml'
