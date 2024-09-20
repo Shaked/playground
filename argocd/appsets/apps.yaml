@@ -20,7 +20,7 @@ spec:
               argocd.argoproj.io/secret-type: cluster
   template:
     metadata:
-      name: 'apps-{{ index .path.segments 2 }}-{{ index .path.segments 3 }}'
+      name: '{{ .name }}-apps-{{ index .path.segments 2 }}-{{ index .path.segments 3 }}'
     spec:
       project: "apps"
       source:
