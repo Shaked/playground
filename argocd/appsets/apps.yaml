@@ -16,7 +16,7 @@ spec:
             - path: charts/apps/**/values.yaml
       - clusters:
           values:
-            region: '{{ index .metadata.labels "region" }}'
+            region: '{{ .metadata.labels.region }}'
           selector:
             matchLabels:
               argocd.argoproj.io/secret-type: cluster
