@@ -1,0 +1,8 @@
+apiVersion: v2
+name: external-dns
+version: "8.3.9"
+dependencies:
+  - name: external-dns
+    version: "8.3.9"
+    repository: oci://registry-1.docker.io/bitnamicharts/external-dns
+    condition: external-dns.enabled
