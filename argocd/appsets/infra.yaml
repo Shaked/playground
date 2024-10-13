@@ -20,9 +20,13 @@ spec:
           selector:
             matchLabels:
               argocd.argoproj.io/secret-type: cluster
-    selector:
-      matchLabels:
-        enabled: '{{ dig "enabled" (true) . }}'
+      filters:  # Filters within the matrix generator
+        - key: infra-enabled
+          operator: Equals
+          value: "true"
+    # selector:
+    #   matchLabels:
+    #     enabled: '{{ dig "enabled" (true) . }}'
     #     region: '{{index .path.segments 5}}'
     #     cloud-provider: '{{index .path.segments 4}}'
   template:
