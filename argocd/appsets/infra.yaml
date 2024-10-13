@@ -13,13 +13,17 @@ spec:
           repoURL: https://github.com/Shaked/playground
           revision: main
           files:
-            - path: charts/infra/**/values.yaml
+            - path: values/infra/**/values.yaml
+            - path: values/infra/**/**/values.yaml
+            - path: values/infra/**/**/**/values.yaml
       - clusters:
           selector:
             matchLabels:
-              argocd.argoproj.io/secret-type: cluster
-              owndata.com/region: '{{ dig "infra.region" ("*") . }}'
+              # owndata.com/env: '{{.environment}}'
               owndata.com/infra-enabled: '{{ dig "enabled" (true) . }}'
+              owndata.com/region: '{{index .path.segments 4}}'
+              owndata.com/cloud-provider: '{{index .path.segments 3}}'
+              argocd.argoproj.io/secret-type: cluster
   template:
     metadata:
       name: '{{ .name }}-infra-{{ index .path.segments 2}}'
