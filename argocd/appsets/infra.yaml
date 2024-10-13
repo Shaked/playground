@@ -13,15 +13,18 @@ spec:
           repoURL: https://github.com/Shaked/playground
           revision: main
           files:
+            - path: values/infra/**/values.yaml
+            - path: values/infra/**/**/values.yaml
             - path: values/infra/**/**/**/values.yaml
       - clusters:
           selector:
             matchLabels:
-              # env: '{{.environment}}'
-              infra-enabled: '{{ dig "enabled" (true) . }}'
-              region: '{{index .path.segments 4}}'
-              cloud-provider: '{{index .path.segments 3}}'
               argocd.argoproj.io/secret-type: cluster
+    selector:
+      matchLabels:
+        infra-enabled: '{{ dig "enabled" (true) . }}'
+        region: '{{index .path.segments 4}}'
+        cloud-provider: '{{index .path.segments 3}}'
   template:
     metadata:
       name: '{{ .name }}-infra-{{ index .path.segments 2}}'
