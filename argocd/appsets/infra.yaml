@@ -23,8 +23,8 @@ spec:
     selector:
       matchLabels:
         infra-enabled: '{{ dig "enabled" (true) . }}'
-        region: '{{index .path.segments 4}}'
-        cloud-provider: '{{index .path.segments 3}}'
+        region: '{{index .path.segments 5}}'
+        cloud-provider: '{{index .path.segments 4}}'
   template:
     metadata:
       name: '{{ .name }}-infra-{{ index .path.segments 2}}'
@@ -40,6 +40,8 @@ spec:
           parameters:
           - name: region
             value: '{{ index .metadata.labels "region" }}'
+          - name: environment
+            value: '{{ index .path.segments 3 }}'
           valueFiles:
           - '../../../values/common-{{ index .path.segments 2 }}.yaml'
           - '../../../values/{{ index .path.segments 2 }}/{{.name}}/values.yaml'
