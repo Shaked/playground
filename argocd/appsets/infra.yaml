@@ -20,7 +20,7 @@ spec:
               argocd.argoproj.io/secret-type: cluster
     selector:
       matchLabels:
-        owndata.com/infra-enabled: "{{ .enabled }}"
+        enabled: "{{ .enabled }}"
   template:
     metadata:
       name: '{{ .name }}-infra-{{ index .path.segments 2}}'
