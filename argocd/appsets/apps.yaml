@@ -18,7 +18,7 @@ spec:
           selector:
             matchLabels:
               argocd.argoproj.io/secret-type: cluster
-              argocd.argoproj.io/product-{{ index .path.segments 2 }}: "true"
+              argocd.argoproj.io/product-{{ index .path.segments 2 }}: '{{ dig "enabled" (true) . }}'
   template:
     metadata:
       name: '{{ .name }}-apps-{{ index .path.segments 2 }}-{{ index .path.segments 3 }}'
@@ -37,6 +37,7 @@ spec:
           valueFiles:
           - '../../../values/common-{{ index .path.segments 2 }}.yaml'
           - '../../../values/{{ index .path.segments 2 }}/{{.name}}/values.yaml'
+          - '../../../values/{{.name}}/{{ index .path.segments 2 }}/{{ index .path.segments 3 }}/values.yaml'
       destination:
         server: "{{ .server }}"
         namespace: "{{ index .path.segments 2 }}"
