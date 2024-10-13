@@ -22,8 +22,7 @@ spec:
               argocd.argoproj.io/secret-type: cluster
     selector:
       matchLabels:
-        argocd.argoproj.io/secret-type: cluster
-    #     infra-enabled: '{{ dig "enabled" (true) . }}'
+        enabled: '{{ dig "enabled" (true) . }}'
     #     region: '{{index .path.segments 5}}'
     #     cloud-provider: '{{index .path.segments 4}}'
   template:
