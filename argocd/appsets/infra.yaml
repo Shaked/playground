@@ -18,7 +18,7 @@ spec:
           selector:
             matchLabels:
               argocd.argoproj.io/secret-type: cluster
-              owndata.com/region: '{{ dig "region" (*) . }}'
+              owndata.com/region: '{{ dig "infra.region" ("*") . }}'
               owndata.com/infra-enabled: '{{ dig "enabled" (true) . }}'
   template:
     metadata:
