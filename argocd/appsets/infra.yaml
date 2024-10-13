@@ -18,6 +18,9 @@ spec:
           selector:
             matchLabels:
               argocd.argoproj.io/secret-type: cluster
+    selector:
+      matchLabels:
+        owndata.com/infra-{{ index .path.segments 2 }}: "{{ .enabled }}"
   template:
     metadata:
       name: '{{ .name }}-infra-{{ index .path.segments 2}}'

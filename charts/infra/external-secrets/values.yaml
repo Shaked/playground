@@ -1,3 +1,4 @@
+enabled: false
 external-secrets:
   enabled: true
 region: "none"
