@@ -15,18 +15,22 @@ spec:
               argocd.argoproj.io/secret-type: cluster
       - merge:
           mergeKeys:
-          - path.path
+          - .values.path
           generators:
           - git:
               repoURL: https://github.com/Shaked/playground
               revision: main
               files:
                 - path: values/infra/**/global/argo.yaml
+              values:
+                path: '{{ .path.path }}'
           - git:
               repoURL: https://github.com/Shaked/playground
               revision: main
               files:
                 - path: values/infra/**/{{ index .metadata.labels "environment" }}/argo.yaml
+              values:
+                path: '{{ .path.path }}'
   template:
     metadata:
       name: '{{ .name }}-infra-{{ index .path.segments 2}}'
