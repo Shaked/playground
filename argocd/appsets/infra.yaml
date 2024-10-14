@@ -19,23 +19,9 @@ spec:
             matchLabels:
               argocd.argoproj.io/secret-type: cluster
               infra-enabled: '{{ dig "enabled" (true) . }}'
-    #   filters:  # Filters within the matrix generator
-    #     - key: infra-enabled
-    #       operator: Equals
-    #       value: "true"
-    # # selector:
-    # #   matchLabels:
-    # #     enabled: '{{ dig "enabled" (true) . }}'
-    # #     region: '{{index .path.segments 5}}'
-    # #     cloud-provider: '{{index .path.segments 4}}'
   template:
     metadata:
       name: '{{ .name }}-infra-{{ index .path.segments 2}}'
-      labels:
-        infra-enabled: '{{ dig "enabled" (true) . }}'
-        region: '{{index .path.segments 5}}'
-        cloud-provider: '{{index .path.segments 4}}'
-        environment: '{{index .path.segments 3}}'
     spec:
       project: "infra"
       source:
