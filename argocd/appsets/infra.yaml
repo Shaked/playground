@@ -27,6 +27,7 @@ spec:
         infra-enabled: '{{ .values.appEnabled }}'
         app-name: '{{ index .path.segments 2 }}'
         environment: '{{ index .path.segments 3 }}'
+        env-name: '{{ dig (printf "%s" (index .metadata.labels "env-name")) "global" . }}'
     spec:
       project: "infra"
       source:
