@@ -27,12 +27,14 @@ spec:
           selector:
             matchLabels:
               argocd.argoproj.io/secret-type: cluster
-              infra-enabled: '{{ dig "target" "enabled" (printf "%s" ("app.enabled")) . }}'
+              # infra-enabled: '{{ dig "target" "enabled" (printf "%s" ("app.enabled")) . }}'
   template:
     metadata:
       name: '{{ .name }}-infra-{{ index .path.segments 2}}'
       labels:
-        infra-enabled: '{{ .enabled }}'
+        app-infra-enabled: '{{ app.enabled }}'
+        target-infra-enabled: '{{ target.enabled }}'
+        dig-infra-enabled: '{{ dig "target" "enabled" (printf "%s" ("app.enabled")) . }}'
         sef2: '{{ index .path.segments 2 }}'
         seg3: '{{ index .path.segments 3 }}'
         environment-labels: '{{ index .metadata.labels "environment" }}'
