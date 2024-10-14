@@ -29,7 +29,7 @@ spec:
           selector:
             matchLabels:
               argocd.argoproj.io/secret-type: cluster
-              # infra-enabled: '{{ dig "target" "enabled" (printf "%s" ("app.enabled")) . }}'
+              infra-enabled: '{{ dig "target" "enabled" "false" . }}'
   template:
     metadata:
       name: '{{ .name }}-infra-{{ index .app.path.segments 2}}'
@@ -37,7 +37,8 @@ spec:
         x: |
           {{ . | mustToPrettyJson }}
       labels:
-        target-infra-enabled: '{{ dig "target" "enabled" "blah" . }}'
+        app-infra-enabled: '{{ dig "app" "enabled" "false" . }}'
+        target-infra-enabled: '{{ dig "target" "enabled" "false" . }}'
         sef2: '{{ index .app.path.segments 2 }}'
         environment-labels: '{{ index .metadata.labels "environment" }}'
     spec:
