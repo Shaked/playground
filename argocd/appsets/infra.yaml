@@ -22,12 +22,12 @@ spec:
                 - path: charts/infra/**/argo.yaml
               pathParamPrefix: app
               values:
-                xyz: 123
+                xyz: "123"
           - git:
               repoURL: https://github.com/Shaked/playground
               revision: main
               files:
-                - path: values/infra/{{ .basenameNormalized }}/**/argo.yaml
+                - path: values/infra/**/argo.yaml
               pathParamPrefix: target
               # infra-enabled: '{{ dig "target" "enabled" (printf "%s" ("app.enabled")) . }}'
   template:
