@@ -17,7 +17,7 @@ spec:
           repoURL: https://github.com/Shaked/playground
           revision: main
           files:
-            - path: values/infra/**/{{ dig (index .metadata.labels "environment") (index .metadata.labels "environment") . }}/argo.yaml
+            - path: values/infra/**/{{ dig "clusters" (index .metadata.labels "environment") "global" . }}/argo.yaml
           values:
             appEnabled: '{{ dig "enabled" true . }}'
   template:
