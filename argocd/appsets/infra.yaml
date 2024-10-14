@@ -33,7 +33,7 @@ spec:
       name: '{{ .name }}-infra-{{ index .target.path.segments 2}}'
       labels:
         app-infra-enabled: '{{ app.enabled }}'
-        target-infra-enabled: '{{ target.enabled }}'
+        target-infra-enabled: '{{ dig "target" "enabled" "blah" . }}'
         dig-infra-enabled: '{{ dig "target" "enabled" (printf "%s" ("app.enabled")) . }}'
         sef2: '{{ index .target.path.segments 2 }}'
         seg3: '{{ index .target.path.segments 3 }}'
