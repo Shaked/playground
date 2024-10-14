@@ -25,6 +25,8 @@ spec:
               revision: main
               files:
                 - path: values/infra/**/{{ index .metadata.labels "environment" }}/argo.yaml
+    selector:
+      infra-enabled: '{{ dig "enabled" (true) . }}'
   template:
     metadata:
       name: '{{ .name }}-infra-{{ index .path.segments 2}}'
