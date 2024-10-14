@@ -27,7 +27,7 @@ spec:
               repoURL: https://github.com/Shaked/playground
               revision: main
               files:
-                - path: values/infra/{{ appName }}/**/argo.yaml
+                - path: values/infra/{{ .appName }}/**/argo.yaml
               pathParamPrefix: target
               # infra-enabled: '{{ dig "target" "enabled" (printf "%s" ("app.enabled")) . }}'
   template:
