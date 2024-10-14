@@ -1,2 +1,2 @@
 appName: cert-manager
-enabled: false
+enabled: true
