@@ -1,4 +1,3 @@
-enabled: false
 cert-manager:
   installCRDs: true
   prometheus:
