@@ -25,6 +25,8 @@ spec:
           selector:
             matchLabels:
               argocd.argoproj.io/secret-type: cluster
+              infra-enabled: '{{ dig "enabled" (true) . }}'
+              environment: '{{ index .path.segments 3 }}'
   template:
     metadata:
       name: '{{ .name }}-infra-{{ index .path.segments 2}}'
