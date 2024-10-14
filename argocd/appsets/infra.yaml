@@ -23,14 +23,14 @@ spec:
               files:
                 - path: values/infra/**/global/argo.yaml
               values:
-                enabled: {{ .enabled }}
+                enabled: "{{ .enabled }}"
           - git:
               repoURL: https://github.com/Shaked/playground
               revision: main
               files:
                 - path: values/infra/**/{{ index .metadata.labels "environment" }}/argo.yaml
               values:
-                enabled: {{ .enabled }}
+                enabled: "{{ .enabled }}"
   template:
     metadata:
       name: '{{ .name }}-infra-{{ index .path.segments 2}}'
