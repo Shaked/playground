@@ -24,7 +24,7 @@ spec:
     metadata:
       name: '{{ .name }}-infra-{{ index .path.segments 2}}'
       labels:
-        infra-enabled: '{{ .appEnabled }}'
+        infra-enabled: '{{ .values.appEnabled }}'
         app-name: '{{ index .path.segments 2 }}'
         environment: '{{ index .path.segments 3 }}'
     spec:
