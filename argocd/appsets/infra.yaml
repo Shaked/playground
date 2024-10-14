@@ -13,6 +13,8 @@ spec:
           selector:
             matchLabels:
               argocd.argoproj.io/secret-type: cluster
+        values:
+          envName: '{{index .metadata.labels "env-name"}}'
       - git:
           repoURL: https://github.com/Shaked/playground
           revision: main
@@ -24,6 +26,7 @@ spec:
     metadata:
       name: '{{ .name }}-infra-{{ index .path.segments 2}}'
       labels:
+        env: '{{ .values.envName }}'
         infra-enabled: '{{ .values.appEnabled }}'
         app-name: '{{ index .path.segments 2 }}'
         environment: '{{ index .path.segments 3 }}'
