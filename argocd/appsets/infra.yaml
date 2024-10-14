@@ -16,14 +16,15 @@ spec:
             - path: values/infra/**/argo.yaml
           values:
             appEnabled: '{{ dig "enabled" true . }}'
-        selector:
-          matchLabels:
-            appEnabled: "true"
+      - clusters:
+          selector:
+            matchLabels:
+              argocd.argoproj.io/secret-type: cluster
   template:
     metadata:
       name: '{{ .name }}-infra-{{ index .path.segments 2}}'
       labels:
-        infra-enabled: '{{ dig "releaseName" true . }}'
+        infra-enabled: '{{ .appEnabled }}'
         app-name: '{{ index .path.segments 2 }}'
         environment: '{{ index .path.segments 3 }}'
     spec:
