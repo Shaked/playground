@@ -13,24 +13,22 @@ spec:
           selector:
             matchLabels:
               argocd.argoproj.io/secret-type: cluster
-        values:
-          envName: '{{index .metadata.labels "env-name"}}'
       - git:
           repoURL: https://github.com/Shaked/playground
           revision: main
           files:
-            - path: values/infra/**/{{ dig (printf "%s" (index .metadata.labels "env-name")) "global" . }}/argo.yaml
+            - path: values/infra/**/{{ dig (printf "%s" (index .metadata.labels "region")) "global" . }}/argo.yaml
           values:
             appEnabled: '{{ dig "enabled" true . }}'
   template:
     metadata:
       name: '{{ .name }}-infra-{{ index .path.segments 2}}'
       labels:
-        env: '{{ .values.envName }}'
+        region: '{{ .values.region }}'
         infra-enabled: '{{ .values.appEnabled }}'
         app-name: '{{ index .path.segments 2 }}'
         environment: '{{ index .path.segments 3 }}'
-        env-name: '{{ dig (printf "%s" (index .metadata.labels "env-name")) "global" . }}'
+        env-name: '{{ index .metadata.labels "region" }}'
     spec:
       project: "infra"
       source:
