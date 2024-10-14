@@ -29,7 +29,7 @@ spec:
           pathParamPrefix: infra
   template:
     metadata:
-      name: '{{ .name }}-infra-{{ index .infra.path.segments 2}}'
+      name: '{{ .infra.name }}-infra-{{ index .infra.path.segments 2}}'
       labels:
         infra-enabled: '{{ .values.appEnabled }}'
         sef2: '{{ index .infra.path.segments 2 }}'
