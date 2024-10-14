@@ -16,6 +16,7 @@ spec:
   - matrix:
       generators:
       - clusters:
+          pathParamPrefix: cluster
           selector:
             matchLabels:
               argocd.argoproj.io/secret-type: cluster
@@ -29,7 +30,7 @@ spec:
           pathParamPrefix: infra
   template:
     metadata:
-      name: '{{ .name }}-infra-{{ index .infra.path.segments 2}}'
+      name: '{{ .cluster.name }}-infra-{{ index .infra.path.segments 2}}'
       labels:
         infra-enabled: '{{ .values.appEnabled }}'
         sef2: '{{ index .infra.path.segments 2 }}'
@@ -54,7 +55,7 @@ spec:
           - '../../../values/common-{{ index .infra.path.segments 2 }}.yaml'
           - '../../../values/{{ index .infra.path.segments 2 }}/{{.name}}/values.yaml'
       destination:
-        server: "{{ .server }}"
+        server: "{{ .cluster.server }}"
         namespace: "{{ index .infra.path.segments 2 }}"
       syncPolicy:
         syncOptions:
