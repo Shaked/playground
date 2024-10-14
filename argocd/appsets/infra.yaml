@@ -15,7 +15,7 @@ spec:
               repoURL: https://github.com/Shaked/playground
               revision: main
               files:
-                - path: charts/infra/**/argo.yaml
+                - path: values/infra/**/argo.yaml
               values:
                 xyz: "123"
           - git:
