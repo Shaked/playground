@@ -22,6 +22,10 @@ spec:
   template:
     metadata:
       name: '{{ .name }}-infra-{{ index .path.segments 2}}'
+      labels:
+        infra-enabled: '{{ dig "enabled" (true) . }}'
+        app-name: '{{ index .path.segments 2 }}'
+        environment: '{{ index .path.segments 3 }}'
     spec:
       project: "infra"
       source:
