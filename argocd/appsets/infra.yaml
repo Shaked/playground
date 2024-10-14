@@ -9,32 +9,31 @@ spec:
   generators:
   - matrix:
       generators:
-      - clusters:
-          selector:
-            matchLabels:
-              argocd.argoproj.io/secret-type: cluster
-        pathParamPrefix: cluster
       - git:
           repoURL: https://github.com/Shaked/playground
           revision: main
           files:
-            - path: values/infra/**/{{ index .metadata.labels "environment" }}/argo.yaml
-          values:
-            appEnabled: '{{ dig "enabled" "global.enabled" . }}'
-          pathParamPrefix: infra
-  - git:
-      repoURL: https://github.com/Shaked/playground
-      revision: main
-      files:
-        - path: values/infra/**/global/argo.yaml
-      pathParamPrefix: global
+            - path: values/infra/**/global/argo.yaml
+      - matrix:
+          generators:
+          - clusters:
+              selector:
+                matchLabels:
+                  argocd.argoproj.io/secret-type: cluster
+          - git:
+              repoURL: https://github.com/Shaked/playground
+              revision: main
+              files:
+                - path: values/infra/**/{{ index .metadata.labels "environment" }}/argo.yaml
+              values:
+                appEnabled: '{{ dig "enabled" "global.enabled" . }}'
   template:
     metadata:
-      name: '{{ .cluster.name }}-infra-{{ index .infra.path.segments 2}}'
+      name: '{{ .name }}-infra-{{ index .path.segments 2}}'
       labels:
         infra-enabled: '{{ .values.appEnabled }}'
-        sef2: '{{ index .infra.path.segments 2 }}'
-        seg3: '{{ index .infra.path.segments 3 }}'
+        sef2: '{{ index .path.segments 2 }}'
+        seg3: '{{ index .path.segments 3 }}'
         environment-labels: '{{ index .metadata.labels "environment" }}'
         dig-global: '{{ global }}'
     spec:
@@ -42,21 +41,21 @@ spec:
       source:
         repoURL: https://github.com/Shaked/playground
         targetRevision: main
-        path: "charts/infra/{{ index .infra.path.segments 2 }}"
+        path: "charts/infra/{{ index .path.segments 2 }}"
         helm:
-          releaseName: '{{ dig "releaseName" (printf "%s" (index .infra.path.segments 2)) . }}'
+          releaseName: '{{ dig "releaseName" (printf "%s" (index .path.segments 2)) . }}'
           ignoreMissingValueFiles: true
           parameters:
           - name: region
             value: '{{ index .metadata.labels "region" }}'
           - name: environment
-            value: '{{ index .infra.path.segments 3 }}'
+            value: '{{ index .path.segments 3 }}'
           valueFiles:
-          - '../../../values/common-{{ index .infra.path.segments 2 }}.yaml'
-          - '../../../values/{{ index .infra.path.segments 2 }}/{{.name}}/values.yaml'
+          - '../../../values/common-{{ index .path.segments 2 }}.yaml'
+          - '../../../values/{{ index .path.segments 2 }}/{{.name}}/values.yaml'
       destination:
         server: "{{ .server }}"
-        namespace: "{{ index .infra.path.segments 2 }}"
+        namespace: "{{ index .path.segments 2 }}"
       syncPolicy:
         syncOptions:
         - CreateNamespace=true
