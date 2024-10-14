@@ -32,7 +32,7 @@ spec:
     metadata:
       name: '{{ .name }}-infra-{{ index .path.segments 2}}'
       labels:
-        infra-enabled: '{{ .values.enabled }}'
+        infra-enabled: '{{ .enabled }}'
         sef2: '{{ index .path.segments 2 }}'
         seg3: '{{ index .path.segments 3 }}'
         environment-labels: '{{ index .metadata.labels "environment" }}'
