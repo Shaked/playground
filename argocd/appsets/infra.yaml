@@ -18,12 +18,12 @@ spec:
           selector:
             matchLabels:
               argocd.argoproj.io/secret-type: cluster
-              infra-enabled: '{{ dig "releaseName" (printf "ffff") . }}'
+              infra-enabled: '{{ dig "releaseName" true . }}'
   template:
     metadata:
       name: '{{ .name }}-infra-{{ index .path.segments 2}}'
       labels:
-        infra-enabled: '{{ dig "releaseName" (printf "ffff") . }}'
+        infra-enabled: '{{ dig "releaseName" true . }}'
         app-name: '{{ index .path.segments 2 }}'
         environment: '{{ index .path.segments 3 }}'
     spec:
