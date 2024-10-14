@@ -13,24 +13,18 @@ spec:
           selector:
             matchLabels:
               argocd.argoproj.io/secret-type: cluster
-      - merge:
-          mergeKeys:
-          - pita
+      - matrix:
           generators:
           - git:
               repoURL: https://github.com/Shaked/playground
               revision: main
               files:
                 - path: values/infra/**/global/argo.yaml
-              values:
-                pita: global
           - git:
               repoURL: https://github.com/Shaked/playground
               revision: main
               files:
                 - path: values/infra/**/{{ index .metadata.labels "environment" }}/argo.yaml
-              values:
-                pita: '{{ index .metadata.labels "environment" }}'
   template:
     metadata:
       name: '{{ .name }}-infra-{{ index .path.segments 2}}'
@@ -38,7 +32,6 @@ spec:
         infra-enabled: '{{ .enabled }}'
         sef2: '{{ index .path.segments 2 }}'
         seg3: '{{ index .path.segments 3 }}'
-        pita: '{{ .pita }}'
         environment-labels: '{{ index .metadata.labels "environment" }}'
     spec:
       project: "infra"
