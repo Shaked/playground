@@ -27,11 +27,7 @@ spec:
           selector:
             matchLabels:
               argocd.argoproj.io/secret-type: cluster
-              `{{ .values.xyz }}`
-      filters:
-        - key: infra-enabled
-          operator: Equals
-          value: "true"
+              infra-enabled: {{ .enabled }}
   template:
     metadata:
       name: '{{ .name }}-infra-{{ index .path.segments 2}}'
