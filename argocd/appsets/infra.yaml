@@ -9,20 +9,17 @@ spec:
   generators:
   - matrix:
       generators:
-      - git:
-          repoURL: https://github.com/Shaked/playground
-          revision: main
-          files:
-            - path: values/infra/**/argo.yaml
-          values:
-            appEnabled: '{{ dig "enabled" true . }}'
-            envName: "{{ index .path.segments 3 }}"
       - clusters:
           selector:
             matchLabels:
               argocd.argoproj.io/secret-type: cluster
-              env-name: '{{ index .path.segments 3 }}'
-              infra-enabled: '{{ dig "enabled" true . }}'
+      - git:
+          repoURL: https://github.com/Shaked/playground
+          revision: main
+          files:
+            - path: values/infra/**/{{ .metadata.labels.env-name }}/argo.yaml
+          values:
+            appEnabled: '{{ dig "enabled" true . }}'
   template:
     metadata:
       name: '{{ .name }}-infra-{{ index .path.segments 2}}'
