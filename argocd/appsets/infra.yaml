@@ -21,7 +21,7 @@ spec:
           selector:
             matchLabels:
               argocd.argoproj.io/secret-type: cluster
-              env-name: '{{ .Values.envName }}'
+              env-name: '{{ index .path.segments 3 }}'
   template:
     metadata:
       name: '{{ .name }}-infra-{{ index .path.segments 2}}'
