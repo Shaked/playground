@@ -25,9 +25,10 @@ spec:
       name: '{{ .name }}-infra-{{ index .path.segments 2}}'
       labels:
         infra-enabled: '{{ .values.appEnabled }}'
-        app-name: '{{ index .path.segments 2 }}'
-        environment: '{{ index .path.segments 3 }}'
-        env-name: '{{ index .metadata.labels "environment" }}'
+        sef2: '{{ index .path.segments 2 }}'
+        seg3: '{{ index .path.segments 3 }}'
+        environment-labels: '{{ index .metadata.labels "environment" }}'
+        dig-global: '{{ dig (index .metadata.labels "environment") "global" . }}'
     spec:
       project: "infra"
       source:
