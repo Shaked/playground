@@ -7,6 +7,12 @@ spec:
   goTemplate: true
   goTemplateOptions: ["missingkey=error"]
   generators:
+  - git:
+      repoURL: https://github.com/Shaked/playground
+      revision: main
+      files:
+        - path: values/infra/**/global/argo.yaml
+      pathParamPrefix: global
   - matrix:
       generators:
       - clusters:
@@ -17,9 +23,10 @@ spec:
           repoURL: https://github.com/Shaked/playground
           revision: main
           files:
-            - path: values/infra/**/{{ dig "clusters" "dev04" "global" . }}/argo.yaml
+            - path: values/infra/**/{{ index .metadata.labels "environment" }}/argo.yaml
           values:
-            appEnabled: '{{ dig "enabled" true . }}'
+            appEnabled: '{{ dig "enabled" "global.enabled" . }}'
+          pathParamPrefix: infra
   template:
     metadata:
       name: '{{ .name }}-infra-{{ index .path.segments 2}}'
@@ -28,7 +35,7 @@ spec:
         sef2: '{{ index .path.segments 2 }}'
         seg3: '{{ index .path.segments 3 }}'
         environment-labels: '{{ index .metadata.labels "environment" }}'
-        dig-global: '{{ dig "clusters" "dev04" "global" . }}'
+        dig-global: '{{ global }}'
     spec:
       project: "infra"
       source:
