@@ -22,12 +22,13 @@ spec:
               repoURL: https://github.com/Shaked/playground
               revision: main
               files:
-                - path: values/infra/**/global/argo.yaml
+                - path: values/infra/**/{{ index .metadata.labels "environment" }}/argo.yaml
           - git:
               repoURL: https://github.com/Shaked/playground
               revision: main
               files:
-                - path: values/infra/**/{{ index .metadata.labels "environment" }}/argo.yaml
+                - path: values/infra/**/global/argo.yaml
+
   template:
     metadata:
       name: '{{ .name }}-infra-{{ index .path.segments 2}}'
