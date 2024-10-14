@@ -20,7 +20,6 @@ spec:
           selector:
             matchLabels:
               argocd.argoproj.io/secret-type: cluster
-              infra-enabled: '{{ .values.appEnabled }}'
   template:
     metadata:
       name: '{{ .name }}-infra-{{ index .path.segments 2}}'
