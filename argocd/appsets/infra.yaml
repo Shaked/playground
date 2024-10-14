@@ -13,13 +13,11 @@ spec:
           selector:
             matchLabels:
               argocd.argoproj.io/secret-type: cluster
-        values:
-          environment: '{{ index .metadata.labels "environment" }}'
       - git:
           repoURL: https://github.com/Shaked/playground
           revision: main
           files:
-            - path: values/infra/**/{{ .values.environment }}/argo.yaml
+            - path: values/infra/**/{{ dig "metadata" "labels" "environment" "global" . }}/argo.yaml
           values:
             appEnabled: '{{ dig "enabled" true . }}'
   template:
