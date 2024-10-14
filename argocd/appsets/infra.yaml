@@ -32,7 +32,8 @@ spec:
     metadata:
       name: '{{ .name }}-infra-{{ index .target.path.segments 2}}'
       labels:
-        app-infra-enabled: '{{ .app.enabled }}'
+        {{ . | mustToPrettyJson }}
+        # app-infra-enabled: '{{ .app.enabled }}'
         target-infra-enabled: '{{ dig "target" "enabled" "blah" . }}'
         sef2: '{{ index .target.path.segments 2 }}'
         seg3: '{{ index .target.path.segments 3 }}'
