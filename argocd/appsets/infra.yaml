@@ -5,20 +5,15 @@ metadata:
   namespace: argocd
 spec:
   goTemplate: true
-  goTemplateOptions: ["missingkey=default"]
+  goTemplateOptions: ["missingkey=error"]
   generators:
-  - git:
-      repoURL: https://github.com/Shaked/playground
-      revision: main
-      files:
-        - path: values/infra/**/global/argo.yaml
-      pathParamPrefix: global
   - matrix:
       generators:
       - clusters:
           selector:
             matchLabels:
               argocd.argoproj.io/secret-type: cluster
+        pathParamPrefix: cluster
       - git:
           repoURL: https://github.com/Shaked/playground
           revision: main
@@ -27,11 +22,16 @@ spec:
           values:
             appEnabled: '{{ dig "enabled" "global.enabled" . }}'
           pathParamPrefix: infra
+  - git:
+      repoURL: https://github.com/Shaked/playground
+      revision: main
+      files:
+        - path: values/infra/**/global/argo.yaml
+      pathParamPrefix: global
   template:
     metadata:
-      name: '{{ .name }}-infra-{{ index .path.segments 2}}'
+      name: '{{ .cluster.name }}-infra-{{ index .path.segments 2}}'
       labels:
-        debug: '{{ . | toPrettyJson }}'
         infra-enabled: '{{ .values.appEnabled }}'
         sef2: '{{ index .path.segments 2 }}'
         seg3: '{{ index .path.segments 3 }}'
