@@ -23,14 +23,14 @@ spec:
               files:
                 - path: values/infra/**/global/argo.yaml
               values:
-                path: '{{ .path.path }}'
+                path: '{{ .path.segments 3 }}'
           - git:
               repoURL: https://github.com/Shaked/playground
               revision: main
               files:
                 - path: values/infra/**/{{ index .metadata.labels "environment" }}/argo.yaml
               values:
-                path: '{{ .path.path }}'
+                path: '{{ .path.segments 3 }}'
   template:
     metadata:
       name: '{{ .name }}-infra-{{ index .path.segments 2}}'
