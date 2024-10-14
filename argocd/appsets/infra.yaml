@@ -9,6 +9,10 @@ spec:
   generators:
   - matrix:
       generators:
+      - clusters:
+          selector:
+            matchLabels:
+              argocd.argoproj.io/secret-type: cluster
       - matrix:
           generators:
           - git:
@@ -23,10 +27,7 @@ spec:
               files:
                 - path: values/infra/**/argo.yaml
               pathParamPrefix: target
-      - clusters:
-          selector:
-            matchLabels:
-              argocd.argoproj.io/secret-type: cluster
+
               # infra-enabled: '{{ dig "target" "enabled" (printf "%s" ("app.enabled")) . }}'
   template:
     metadata:
