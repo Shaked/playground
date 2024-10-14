@@ -22,7 +22,7 @@ spec:
               argocd.argoproj.io/secret-type: cluster
   template:
     metadata:
-      name: '{{ .name }}-infra-{{ index .path.segments 2}}'
+      name: '{{ .name }}-infra-{{ index .path.segments 2}}-{{ index .path.segments 3 }}'
       labels:
         infra-enabled: '{{ .values.appEnabled }}'
         app-name: '{{ index .path.segments 2 }}'
