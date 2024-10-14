@@ -39,7 +39,6 @@ spec:
       labels:
         target-infra-enabled: '{{ dig "target" "enabled" "blah" . }}'
         sef2: '{{ index .app.path.segments 2 }}'
-        seg3: '{{ index .app.path.segments 3 }}'
         environment-labels: '{{ index .metadata.labels "environment" }}'
     spec:
       project: "infra"
