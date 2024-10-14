@@ -9,7 +9,7 @@ spec:
   generators:
   - matrix:
       generators:
-        matrix:
+      - matrix:
           generators:
           - git:
               repoURL: https://github.com/Shaked/playground
@@ -25,11 +25,6 @@ spec:
           selector:
             matchLabels:
               argocd.argoproj.io/secret-type: cluster
-              infra-enabled: '{{ dig "enabled" (true) . }}'
-      # filters:
-      #   - key: infra-enabled
-      #     operator: Equals
-      #     value: "true"
   template:
     metadata:
       name: '{{ .name }}-infra-{{ index .path.segments 2}}'
