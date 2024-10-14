@@ -28,7 +28,7 @@ spec:
         sef2: '{{ index .path.segments 2 }}'
         seg3: '{{ index .path.segments 3 }}'
         environment-labels: '{{ index .metadata.labels "environment" }}'
-        dig-global: '{{ dig (index .metadata.labels "environment") "global" . }}'
+        dig-global: '{{ dig "clusters" "dev04" "global" . }}'
     spec:
       project: "infra"
       source:
