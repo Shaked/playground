@@ -19,6 +19,10 @@ spec:
           files:
             - path: values/infra/**/global/argo.yaml
             - path: values/infra/**/{{ index .metadata.labels "environment" }}/argo.yaml
+      filters:
+        - key: infra-enabled
+          operator: Equals
+          value: "true"
   template:
     metadata:
       name: '{{ .name }}-infra-{{ index .path.segments 2}}'
