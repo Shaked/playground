@@ -5,7 +5,7 @@ metadata:
   namespace: argocd
 spec:
   goTemplate: true
-  goTemplateOptions: ["missingkey=error"]
+  goTemplateOptions: ["missingkey=default"]
   generators:
   - git:
       repoURL: https://github.com/Shaked/playground
@@ -31,6 +31,7 @@ spec:
     metadata:
       name: '{{ .name }}-infra-{{ index .path.segments 2}}'
       labels:
+        debug: '{{ . | toPrettyJson }}'
         infra-enabled: '{{ .values.appEnabled }}'
         sef2: '{{ index .path.segments 2 }}'
         seg3: '{{ index .path.segments 3 }}'
