@@ -13,20 +13,12 @@ spec:
           selector:
             matchLabels:
               argocd.argoproj.io/secret-type: cluster
-      - matrix:
-          generators:
-          - git:
-              repoURL: https://github.com/Shaked/playground
-              revision: main
-              files:
-                - path: values/infra/**/global/argo.yaml
-          - git:
-              repoURL: https://github.com/Shaked/playground
-              revision: main
-              files:
-                - path: values/infra/**/{{ index .metadata.labels "environment" }}/argo.yaml
-    selector:
-      infra-enabled: '{{ dig "enabled" (true) . }}'
+      - git:
+          repoURL: https://github.com/Shaked/playground
+          revision: main
+          files:
+            - path: values/infra/**/global/argo.yaml
+            - path: values/infra/**/{{ index .metadata.labels "environment" }}/argo.yaml
   template:
     metadata:
       name: '{{ .name }}-infra-{{ index .path.segments 2}}'
