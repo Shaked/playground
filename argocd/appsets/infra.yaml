@@ -53,8 +53,6 @@ spec:
           parameters:
           - name: region
             value: '{{ index .metadata.labels "region" }}'
-          - name: environment
-            value: '{{ index .app.path.segments 3 }}'
           valueFiles:
           - '../../../values/common-{{ index .app.path.segments 2 }}.yaml'
           - '../../../values/{{ index .app.path.segments 2 }}/{{.name}}/values.yaml'
