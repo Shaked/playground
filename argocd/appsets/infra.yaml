@@ -17,7 +17,7 @@ spec:
               files:
                 - path: values/infra/**/argo.yaml
               values:
-                xyz: "123"
+                xyz: "infra-enabled: '{{ .enabled }}'"
           - git:
               repoURL: https://github.com/Shaked/playground
               revision: main
@@ -27,6 +27,7 @@ spec:
           selector:
             matchLabels:
               argocd.argoproj.io/secret-type: cluster
+              {{ .values.xyz }}
       filters:
         - key: infra-enabled
           operator: Equals
