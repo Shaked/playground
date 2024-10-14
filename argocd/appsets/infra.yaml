@@ -15,7 +15,7 @@ spec:
               argocd.argoproj.io/secret-type: cluster
       - merge:
           mergeKeys:
-          - values.enabled
+          - path
           generators:
           - git:
               repoURL: https://github.com/Shaked/playground
