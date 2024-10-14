@@ -29,7 +29,7 @@ spec:
           selector:
             matchLabels:
               argocd.argoproj.io/secret-type: cluster
-              infra-enabled: '{{ dig "enabled" "false" . }}'
+              infra-enabled: '{{ .enabled }}'
   template:
     metadata:
       name: '{{ .name }}-infra-{{ index .app.path.segments 2}}'
