@@ -22,9 +22,11 @@ spec:
                   argocd.argoproj.io/secret-type: cluster
               values:
                 env: '{{- `{{ index .metadata.labels "environment" }}` -}}'
-      - list:
-          elements:
-          - enabled: true
+      - git:
+          repoURL: https://github.com/Shaked/playground
+          revision: main
+          files:
+            - path: values/infra/{{ index .path.segments 2}}/**/argo.yaml
   template:
     metadata:
       name: '{{ .name }}-infra-{{ index .path.segments 2}}'
