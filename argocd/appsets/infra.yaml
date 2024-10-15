@@ -9,7 +9,6 @@ spec:
   generators:
   - matrix:
       generators:
-      - list: {}
       - matrix:
           generators:
           - git:
@@ -23,6 +22,9 @@ spec:
                   argocd.argoproj.io/secret-type: cluster
               values:
                 env: '{{- `{{ index .metadata.labels "environment" }}` -}}'
+      - list:
+          elements:
+          - enabled: true
   template:
     metadata:
       name: '{{ .name }}-infra-{{ index .path.segments 2}}'
