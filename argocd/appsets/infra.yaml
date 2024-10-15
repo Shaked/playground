@@ -11,6 +11,10 @@ spec:
       generators:
       - matrix:
           generators:
+          - clusters:
+            selector:
+              matchLabels:
+                argocd.argoproj.io/secret-type: cluster
           - git:
               repoURL: https://github.com/Shaked/playground
               revision: main
@@ -18,15 +22,12 @@ spec:
                 - path: values/infra/**/**/argo.yaml
               values:
                 xyz: "111"
-          - git:
-              repoURL: https://github.com/Shaked/playground
-              revision: main
-              files:
-                - path: values/infra/{{ index .path.segments 2 }}/argo.yaml
-      - clusters:
-          selector:
-            matchLabels:
-              argocd.argoproj.io/secret-type: cluster
+      - git:
+          repoURL: https://github.com/Shaked/playground
+          revision: main
+          files:
+            - path: values/infra/{{ index .path.segments 2 }}/argo.yaml
+
   template:
     metadata:
       name: '{{ .name }}-infra-{{ index .path.segments 2}}'
