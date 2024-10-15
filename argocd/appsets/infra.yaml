@@ -30,6 +30,8 @@ spec:
           revision: main
           files:
             - path: charts/infra/{{ .path.basenameNormalized }}/{{ .values.env }}/argo.yaml
+          values:
+            env: ""
   template:
     metadata:
       name: '{{ .name }}-infra-{{ index .path.segments 2}}'
