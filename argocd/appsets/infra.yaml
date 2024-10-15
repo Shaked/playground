@@ -9,19 +9,27 @@ spec:
   generators:
   - matrix:
       generators:
-        - clusters: # 2 clusters
-            selector:
-              matchLabels:
-                argocd.argoproj.io/secret-type: cluster
-            values:
-              env: '{{- `{{ index .metadata.labels "environment" }}` -}}'
-              isCluterInfraEnabled: '{{- `{{ index .metadata.labels "infra-enabled" }}` -}}'
-        - git: # 3
-            repoURL: https://github.com/Shaked/playground
-            revision: main
-            files:
-              - path: charts/infra/**/argo.yaml
-            pathParamPrefix: app
+      - matrix:
+          generators:
+          - clusters: # 2 clusters
+              selector:
+                matchLabels:
+                  argocd.argoproj.io/secret-type: cluster
+              values:
+                env: '{{- `{{ index .metadata.labels "environment" }}` -}}'
+                isCluterInfraEnabled: '{{- `{{ index .metadata.labels "infra-enabled" }}` -}}'
+          - git: # 3 with defaults
+              repoURL: https://github.com/Shaked/playground
+              revision: main
+              files:
+                - path: charts/infra/**/argo.yaml
+              pathParamPrefix: app
+      - git: # 3 with defaults
+          repoURL: https://github.com/Shaked/playground
+          revision: main
+          files:
+            - path: charts/infra/{{ .app.nameNormalized }}/{{ .values.env }}/argo.yaml
+          pathParamPrefix: target
   template:
     metadata:
       name: '{{ .name }}-infra-{{ index .app.path.segments 2}}'
