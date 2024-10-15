@@ -15,7 +15,7 @@ spec:
               repoURL: https://github.com/Shaked/playground
               revision: main
               files:
-                - path: values/infra/**/**/argo.yaml
+                - path: values/infra/**/argo.yaml
           - clusters:
               selector:
                 matchLabels:
