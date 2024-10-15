@@ -22,7 +22,6 @@ spec:
                   argocd.argoproj.io/secret-type: cluster
               values:
                 env: '{{- `{{ index .metadata.labels "environment" }}` -}}'
-                ppath: '{{- `{{ index .path.segments 2 }}` -}}'
       - list:
           elementsYaml: "{{ . | toJson }}"
 
