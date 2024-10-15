@@ -33,26 +33,26 @@ spec:
         infra-enabled: '{{ .enabled }}'
         app-infra-enabled: '{{ dig "app" "enabled" "false" . }}'
         defaults-infra-enabled: '{{ dig "defaults" "enabled" "false" . }}'
-        sef2: '{{ index .target.path.segments 2 }}'
+        sef2: '{{ index .app.path.segments 2 }}'
         environment-labels: '{{ index .metadata.labels "environment" }}'
     spec:
       project: "infra"
       source:
         repoURL: https://github.com/Shaked/playground
         targetRevision: main
-        path: "charts/infra/{{ index .target.path.segments 2 }}"
+        path: "charts/infra/{{ index .app.path.segments 2 }}"
         helm:
-          releaseName: '{{ dig "releaseName" (printf "%s" (index .target.path.segments 2)) . }}'
+          releaseName: '{{ dig "releaseName" (printf "%s" (index .app.path.segments 2)) . }}'
           ignoreMissingValueFiles: true
           parameters:
           - name: region
             value: '{{ index .metadata.labels "region" }}'
           valueFiles:
-          - '../../../values/common-{{ index .target.path.segments 2 }}.yaml'
-          - '../../../values/{{ index .target.path.segments 2 }}/{{.name}}/values.yaml'
+          - '../../../values/common-{{ index .app.path.segments 2 }}.yaml'
+          - '../../../values/{{ index .app.path.segments 2 }}/{{.name}}/values.yaml'
       destination:
         server: "{{ .server }}"
-        namespace: "{{ index .target.path.segments 2 }}"
+        namespace: "{{ index .app.path.segments 2 }}"
       syncPolicy:
         automated:
           prune: true
