@@ -9,7 +9,7 @@ spec:
   generators:
   - merge:
       mergeKeys:
-      - values.env
+      - server
       generators:
       - matrix:
           generators:
