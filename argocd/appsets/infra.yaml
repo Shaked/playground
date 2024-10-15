@@ -22,6 +22,9 @@ spec:
             selector:
               matchLabels:
                 argocd.argoproj.io/secret-type: cluster
+      - list:
+          elementsYaml: "{{ . | toJson }}"
+
   template:
     metadata:
       name: '{{ .name }}-infra-{{ index .path.segments 2}}'
