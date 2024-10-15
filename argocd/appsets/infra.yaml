@@ -16,6 +16,7 @@ spec:
               revision: main
               files:
                 - path: values/infra/**/argo.yaml
+              pathParamPrefix: app
           - clusters:
               selector:
                 matchLabels:
@@ -26,10 +27,11 @@ spec:
           repoURL: https://github.com/Shaked/playground
           revision: main
           files:
-            - path: values/infra/{{ index .path.segments 2}}/**/argo.yaml
+            - path: values/infra/{{ index .app.path.segments 2}}/**/argo.yaml
+          pathParamPrefix: target
   template:
     metadata:
-      name: '{{ .name }}-infra-{{ index .path.segments 2}}'
+      name: '{{ .name }}-infra-{{ index .target.path.segments 2}}'
       annotations:
         x: |
           {{ . | mustToPrettyJson }}
@@ -37,26 +39,26 @@ spec:
         infra-enabled: '{{ .enabled }}'
         app-infra-enabled: '{{ dig "app" "enabled" "false" . }}'
         defaults-infra-enabled: '{{ dig "defaults" "enabled" "false" . }}'
-        sef2: '{{ index .path.segments 2 }}'
+        sef2: '{{ index .target.path.segments 2 }}'
         environment-labels: '{{ index .metadata.labels "environment" }}'
     spec:
       project: "infra"
       source:
         repoURL: https://github.com/Shaked/playground
         targetRevision: main
-        path: "charts/infra/{{ index .path.segments 2 }}"
+        path: "charts/infra/{{ index .target.path.segments 2 }}"
         helm:
-          releaseName: '{{ dig "releaseName" (printf "%s" (index .path.segments 2)) . }}'
+          releaseName: '{{ dig "releaseName" (printf "%s" (index .target.path.segments 2)) . }}'
           ignoreMissingValueFiles: true
           parameters:
           - name: region
             value: '{{ index .metadata.labels "region" }}'
           valueFiles:
-          - '../../../values/common-{{ index .path.segments 2 }}.yaml'
-          - '../../../values/{{ index .path.segments 2 }}/{{.name}}/values.yaml'
+          - '../../../values/common-{{ index .target.path.segments 2 }}.yaml'
+          - '../../../values/{{ index .target.path.segments 2 }}/{{.name}}/values.yaml'
       destination:
         server: "{{ .server }}"
-        namespace: "{{ index .path.segments 2 }}"
+        namespace: "{{ index .target.path.segments 2 }}"
       syncPolicy:
         automated:
           prune: true
