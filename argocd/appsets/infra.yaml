@@ -23,6 +23,7 @@ spec:
                   argocd.argoproj.io/secret-type: cluster
               values:
                 env: '{{- `{{ index .metadata.labels "environment" }}` -}}'
+                isCluterInfraEnabled: '{{- `{{ index .metadata.labels "infra-enabled" }}` -}}'
       - git:
           repoURL: https://github.com/Shaked/playground
           revision: main
@@ -30,7 +31,7 @@ spec:
             - path: values/infra/{{ index .app.path.segments 2}}/**/argo.yaml
           pathParamPrefix: target
       filters:
-        - key: infra-enabled
+        - key: isCluterInfraEnabled
           operator: Equals
           value: '{{ dig "target" "enabled" "false" . }}'
   template:
