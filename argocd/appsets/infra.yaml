@@ -9,13 +9,13 @@ spec:
   generators:
   - matrix:
       generators:
-        - git:
+        - git: # 3
             repoURL: https://github.com/Shaked/playground
             revision: main
             files:
-              - path: values/infra/**/argo.yaml
+              - path: values/infra/**/**/argo.yaml
             pathParamPrefix: app
-        - clusters:
+        - clusters: # 2 clusters
             selector:
               matchLabels:
                 argocd.argoproj.io/secret-type: cluster
