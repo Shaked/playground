@@ -32,7 +32,7 @@ spec:
       filters:
         - key: infra-enabled
           operator: Equals
-          value: "{{ dig "target" "enabled" "false" . }}"
+          value: '{{ dig "target" "enabled" "false" . }}'
   template:
     metadata:
       name: '{{ .name }}-infra-{{ index .target.path.segments 2}}'
