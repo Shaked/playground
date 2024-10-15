@@ -28,7 +28,7 @@ spec:
           repoURL: https://github.com/Shaked/playground
           revision: main
           files:
-            - path: charts/infra/{{ .app.path.nameNormalized }}/{{ .values.env }}/argo.yaml
+            - path: charts/infra/{{ .app.path.basenameNormalized }}/{{ .values.env }}/argo.yaml
           pathParamPrefix: target
   template:
     metadata:
