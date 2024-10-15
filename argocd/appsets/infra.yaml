@@ -9,34 +9,23 @@ spec:
   generators:
   - matrix:
       generators:
-      - matrix:
-          generators:
-          - git:
-              repoURL: https://github.com/Shaked/playground
-              revision: main
-              files:
-                - path: values/infra/**/argo.yaml
-              pathParamPrefix: app
-          - clusters:
-              selector:
-                matchLabels:
-                  argocd.argoproj.io/secret-type: cluster
-              values:
-                env: '{{- `{{ index .metadata.labels "environment" }}` -}}'
-                isCluterInfraEnabled: '{{- `{{ index .metadata.labels "infra-enabled" }}` -}}'
-      - git:
-          repoURL: https://github.com/Shaked/playground
-          revision: main
-          files:
-            - path: values/infra/{{ index .app.path.segments 2}}/**/argo.yaml
-          pathParamPrefix: target
-      filters:
-        - key: isCluterInfraEnabled
-          operator: Equals
-          value: '{{ dig "target" "enabled" "false" . }}'
+        - git:
+            repoURL: https://github.com/Shaked/playground
+            revision: main
+            files:
+              - path: values/infra/**/argo.yaml
+            pathParamPrefix: app
+        - clusters:
+            selector:
+              matchLabels:
+                argocd.argoproj.io/secret-type: cluster
+            values:
+              env: '{{- `{{ index .metadata.labels "environment" }}` -}}'
+              isCluterInfraEnabled: '{{- `{{ index .metadata.labels "infra-enabled" }}` -}}'
+
   template:
     metadata:
-      name: '{{ .name }}-infra-{{ index .target.path.segments 2}}'
+      name: '{{ .name }}-infra-{{ index .app.path.segments 2}}'
       annotations:
         x: |
           {{ . | mustToPrettyJson }}
