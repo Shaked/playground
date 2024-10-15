@@ -22,11 +22,13 @@ spec:
             selector:
               matchLabels:
                 argocd.argoproj.io/secret-type: cluster
-      - git:
-          repoURL: https://github.com/Shaked/playground
-          revision: main
-          files:
-            - path: values/infra/{{ index .path.segments 2 }}/argo.yaml
+      - list:
+          elementsYaml: "{{ . | toJson }}"
+      # - git:
+      #     repoURL: https://github.com/Shaked/playground
+      #     revision: main
+      #     files:
+      #       - path: values/infra/{{ index .path.segments 2 }}/argo.yaml
 
   template:
     metadata:
