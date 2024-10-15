@@ -9,12 +9,6 @@ spec:
   generators:
   - matrix:
       generators:
-        - git: # 3
-            repoURL: https://github.com/Shaked/playground
-            revision: main
-            files:
-              - path: values/infra/**/**/argo.yaml
-            pathParamPrefix: app
         - clusters: # 2 clusters
             selector:
               matchLabels:
@@ -22,7 +16,12 @@ spec:
             values:
               env: '{{- `{{ index .metadata.labels "environment" }}` -}}'
               isCluterInfraEnabled: '{{- `{{ index .metadata.labels "infra-enabled" }}` -}}'
-
+        - git: # 3
+            repoURL: https://github.com/Shaked/playground
+            revision: main
+            files:
+              - path: values/infra/**/{{ .nameNormalized }}/argo.yaml
+            pathParamPrefix: app
   template:
     metadata:
       name: '{{ .name }}-infra-{{ index .app.path.segments 2}}'
