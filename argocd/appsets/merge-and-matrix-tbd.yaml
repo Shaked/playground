@@ -1,0 +1,53 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: merge-two-matrixes
+spec:
+  # goTemplate: true
+  # goTemplateOptions: ["missingkey=error"]
+  generators:
+    - merge:
+        mergeKeys:
+          - server
+          - name
+          - values.selector
+        generators:
+          - matrix:
+              generators:
+                - clusters:
+                    values:
+                      env: "{{ name }}"
+                - git:
+                    repoURL: https://github.com/Shaked/playground
+                    revision: main
+                    files:
+                      - path: charts/apps/app1/**/values.yaml
+                    values:
+                      selector: '{{ path.basename }}'
+          - matrix:
+              generators:
+                - clusters: {}
+                - git:
+                    repoURL: https://github.com/Shaked/playground
+                    revision: main
+                    files:
+                      - path: values/apps/app1/{{ path.basenameNormalized }}/{{ values.env }}/argo.yaml
+  template:
+    metadata:
+      name: '{{ name }}-guestbook-{{ path.basenameNormalized}}'
+      annotations:
+        x: |
+          enabled: {{ enabled }}
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/argoproj/argocd-example-apps/
+        targetRevision: HEAD
+        path: helm-guestbook
+        helm:
+          parameters:
+            - name: replicaCount
+              value: '{{ values.replicaCount}}'
+      destination:
+        server: '{{ server}}'
+        namespace: '{{ namespace}}'
