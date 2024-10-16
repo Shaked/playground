@@ -19,12 +19,9 @@ spec:
             environment: '{{ index .path.segments 2 }}'
       - clusters:
           selector:
-            matchExpressions:
-            - key: cloudProvider
-              operator: Exists
             matchLabels:
               argocd.argoproj.io/secret-type: cluster
-              # cloudProvider: '{{ dig "cloudProvider" "true" . }}'
+              cloud-provider: '{{ dig "cloudProvider" "true" . }}'
               # argocd.argoproj.io/product-{{ index .path.segments 2 }}: '{{ dig "enabled" (true) . }}'
   template:
     metadata:

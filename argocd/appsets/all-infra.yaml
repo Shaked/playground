@@ -14,18 +14,32 @@ spec:
           repoURL: https://github.com/Shaked/playground
           revision: main
           files:
-            - path: charts/infra/*/argo/*/argo.yaml
+            - path: charts/infra/*/argo.yaml
           values:
-            environment: '{{ index .path.segments 5 }}'
+            environment: '{{ index .path.segments 2 }}'
       - clusters:
           selector:
             matchLabels:
               argocd.argoproj.io/secret-type: cluster
-              environment: '{{ .values.environment }}'
+              # environment: '{{ .values.environment }}'
+            matchExpressions:
+              - key: name
+                operator: |-
+                  {{ ternary "In" "NotIn" (and (hasKey . "cluster") (hasKey .cluster "name")) }}
+                values:
+                  - '{{ if (and (hasKey . "cluster") (hasKey .cluster "name")) }}{{.cluster.name}}{{ else }}will__never__match{{ end }}'
+              - key: cloud-provider
+                operator: |-
+                  {{ if hasPrefix "!" (dig "cloudProvider" "!" .) }}NotIn{{ else }}In{{ end }}
+                values:
+                  - '{{ dig "cloudProvider" "" . | trimPrefix "!" | splitList "," | has "aws" | ternary "aws" "will__never__match" }}'
+                  - '{{ dig "cloudProvider" "" . | trimPrefix "!" | splitList "," | has "gcp" | ternary "gcp" "will__never__match" }}'
+                  - '{{ dig "cloudProvider" "" . | trimPrefix "!" | splitList "," | has "azure" | ternary "azure" "will__never__match" }}'
+
               # argocd.argoproj.io/product-{{ index .path.segments 2 }}: '{{ dig "enabled" (true) . }}'
   template:
     metadata:
-      name: '{{ .name }}-apps-{{ index .path.segments 2 }}-{{ dig "enabled" "blah" . }}-{{ dig "blah" "xyz" . }}'
+      name: '{{ .name }}-apps-{{ index .path.segments 2 }}-{{ dig "enabled" "blah" . }}-{{ dig "cloudProvider" "nocloud" . }}'
       annotations:
         x: |
           {{ . | mustToPrettyJson }}

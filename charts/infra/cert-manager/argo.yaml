@@ -1,1 +1,3 @@
 cloudProvider: aws
+clusters:
+- name: dev04
