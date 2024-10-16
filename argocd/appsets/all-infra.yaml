@@ -25,9 +25,9 @@ spec:
             matchExpressions:
               - key: name
                 operator: |-
-                  {{ ternary "In" "NotIn" (and (hasKey . "cluster") (hasKey .cluster "name")) }}
+                    {{ ternary "In" "NotIn" (and (hasKey . "cluster") (hasKey .cluster "name")) }}
                 values:
-                  - '{{ if (and (hasKey . "cluster") (hasKey .cluster "name")) }}{{.cluster.name}}{{ else }}will__never__match{{ end }}'
+                  - '{{ if (and (hasKey . "clusters") (hasKey .clusters .name)) }}{{.cluster.name}}{{ else }}will__never__match{{ end }}'
               - key: cloud-provider
                 operator: |-
                   {{ if hasPrefix "!" (dig "cloudProvider" "!" .) }}NotIn{{ else }}In{{ end }}
@@ -39,7 +39,8 @@ spec:
               # argocd.argoproj.io/product-{{ index .path.segments 2 }}: '{{ dig "enabled" (true) . }}'
   template:
     metadata:
-      name: '{{ .name }}-apps-{{ index .path.segments 2 }}-{{ dig "enabled" "blah" . }}-{{ dig "cloudProvider" "nocloud" . }}'
+      name: '{{ .name }}-apps-{{ index .path.segments 2 }}-{{ dig "enabled" "blah" . }}-{{ dig "cloudProvider" "nocloud" . }}-{{ ternary "boop" (printf "-%v" .name) (and (hasKey . "cluster") (hasKey .cluster "name")) }}'
+    spec:
       annotations:
         x: |
           {{ . | mustToPrettyJson }}
