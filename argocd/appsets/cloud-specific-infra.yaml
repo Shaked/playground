@@ -2,7 +2,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: all-infra
+  name: cloud-specific-infra
   namespace: argocd
 spec:
   goTemplate: true
@@ -14,14 +14,17 @@ spec:
           repoURL: https://github.com/Shaked/playground
           revision: main
           files:
-            - path: charts/infra/*/argo/*/argo.yaml
+            - path: charts/infra/*/argo.yaml
           values:
-            environment: '{{ index .path.segments 5 }}'
+            environment: '{{ index .path.segments 2 }}'
       - clusters:
           selector:
+            matchExpressions:
+            - key: cloudProvider
+              operator: Exists
             matchLabels:
               argocd.argoproj.io/secret-type: cluster
-              environment: '{{ .values.environment }}'
+              # cloudProvider: '{{ dig "cloudProvider" "true" . }}'
               # argocd.argoproj.io/product-{{ index .path.segments 2 }}: '{{ dig "enabled" (true) . }}'
   template:
     metadata:
