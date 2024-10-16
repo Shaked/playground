@@ -14,15 +14,15 @@ spec:
           repoURL: https://github.com/Shaked/playground
           revision: main
           files:
-            - path: charts/apps/app1/*/values/**/argo.yaml
+            - path: charts/apps/app1/*/values/*/argo.yaml
           values:
             environment: '{{ index .path.segments 5 }}'
       - clusters:
           selector:
             matchLabels:
               argocd.argoproj.io/secret-type: cluster
-              env: '{{ .values.environment }}'
-              # argocd.argoproj.io/product-{{ index .path.segments 2 }}: '{{ dig "enabled" (true) . }}'
+              environment: '{{ .values.environment }}'
+              argocd.argoproj.io/product-{{ index .path.segments 2 }}: '{{ dig "enabled" (true) . }}'
   template:
     metadata:
       name: '{{ .name }}-apps-{{ index .path.segments 2 }}-{{ index .path.segments 3 }}-{{ dig "enabled" "blah" . }}-{{ dig "blah" "xyz" . }}'
