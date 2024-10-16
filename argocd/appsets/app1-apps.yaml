@@ -19,7 +19,7 @@ spec:
           selector:
             matchLabels:
               argocd.argoproj.io/secret-type: cluster
-              argocd.argoproj.io/product-{{ index .path.segments 2 }}: '{{ dig "enabled" (true) . }}'
+              # argocd.argoproj.io/product-{{ index .path.segments 2 }}: '{{ dig "enabled" (true) . }}'
   template:
     metadata:
       name: '{{ .name }}-apps-{{ index .path.segments 2 }}-{{ index .path.segments 3 }}-{{ dig "enabled" "blah" . }}-{{ dig "blah" "xyz" . }}'
