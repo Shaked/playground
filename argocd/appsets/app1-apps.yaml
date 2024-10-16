@@ -14,7 +14,7 @@ spec:
           repoURL: https://github.com/Shaked/playground
           revision: main
           files:
-            - path: charts/apps/app1/*/values/*/argo.yaml
+            - path: charts/apps/*/*/values/*/argo.yaml
           values:
             environment: '{{ index .path.segments 5 }}'
       - clusters:
