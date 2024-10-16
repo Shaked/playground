@@ -13,7 +13,7 @@ spec:
           repoURL: https://github.com/Shaked/playground
           revision: main
           files:
-            - path: charts/apps/app1/*/argo.yaml
+            - path: charts/apps/app1/**/argo.yaml
       - clusters:
           selector:
             matchLabels:
@@ -21,7 +21,7 @@ spec:
               # argocd.argoproj.io/product-{{ index .path.segments 2 }}: '{{ dig "enabled" (true) . }}'
   template:
     metadata:
-      name: '{{ .name }}-apps-{{ index .path.segments 2 }}-{{ index .path.segments 3 }}'
+      name: '{{ .name }}-apps-{{ index .path.segments 2 }}-{{ index .path.segments 3 }}-{{ dig "enabled" "blah" . }}-{{ dig "blah" "xyz" . }}'
       annotations:
         x: |
           {{ . | mustToPrettyJson }}
