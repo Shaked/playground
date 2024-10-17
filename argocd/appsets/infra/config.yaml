@@ -34,7 +34,6 @@ spec:
       project: "infra"
       sources:
       - repoURL: "{{ .repoUrl }}"
-        chart: '{{ .values.packageName }}'
         targetRevision: "{{ .version }}"
         path: "charts/infra/{{ .values.packageName }}"
         helm:
