@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: infra-aws
+  name: infra-cloud-provider
   namespace: argocd
 spec:
   goTemplate: true
@@ -13,12 +13,12 @@ spec:
           repoURL: https://github.com/Shaked/playground
           revision: main
           files:
-            - path: argocd/appsets/infra/cluster-labels/aws/**/argo.yaml
+            - path: argocd/appsets/infra/cluster-labels/cloud-provider/**/**/argo.yaml
           values:
-            cloudProvider: '{{ index .path.segments 4 }}'
-            packageName: '{{ index .path.segments 5 }}'
-            environment: '{{ index .path.segments 6 }}'
-            appsetName: 'infra-aws'
+            cloudProvider: '{{ index .path.segments 5 }}'
+            packageName: '{{ index .path.segments 6 }}'
+            environment: '{{ index .path.segments 7 }}'
+            appsetName: 'infra-cloud-provider'
       - clusters:
           selector:
             matchLabels:
