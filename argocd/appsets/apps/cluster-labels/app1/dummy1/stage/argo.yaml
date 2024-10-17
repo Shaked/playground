@@ -1,4 +1,3 @@
 repoUrl: https://github.com/Shaked/playground.git
 version: HEAD
-enabled: false
 namespace: app1
