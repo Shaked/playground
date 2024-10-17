@@ -42,6 +42,7 @@ spec:
           ignoreMissingValueFiles: true
           valuesObject:
             region: '{{ index .metadata.labels "region" }}'
+            clusterName: '{{ .name }}'
           valueFiles:
           - '$values/values/infra/{{ .values.packageName }}/values.yaml'
           - '$values/values/infra/{{ .values.packageName }}/{{ .values.environment }}.yaml'

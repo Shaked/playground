@@ -36,6 +36,9 @@ spec:
       - repoURL: "{{ .repoUrl }}"
         chart: '{{ .values.packageName }}'
         targetRevision: "{{ .version }}"
+        valuesObject:
+          region: '{{ index .metadata.labels "region" }}'
+          clusterName: '{{ .name }}'
         helm:
           releaseName: '{{ dig "releaseName" (printf "%s" (.values.packageName)) . }}'
           ignoreMissingValueFiles: true
