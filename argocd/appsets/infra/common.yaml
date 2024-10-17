@@ -39,14 +39,10 @@ spec:
         helm:
           releaseName: '{{ dig "releaseName" (printf "%s" (.values.packageName)) . }}'
           ignoreMissingValueFiles: true
-          parameters:
-          - name: region
-            value: '{{ index .metadata.labels "region" }}'
-          - name: clusterName
-            value: '{{ .name }}'
           valueFiles:
           - '$values/values/infra/{{ .values.packageName }}/values.yaml'
           - '$values/values/infra/{{ .values.packageName }}/{{ .values.environment }}.yaml'
+          - '$values/values/infra/{{ .values.packageName }}/{{ index .metadata.labels "region" }}.yaml'
           - '$values/values/infra/{{ .values.packageName }}/{{ .name }}.yaml'
       - repoURL: 'https://github.com/Shaked/playground.git'
         targetRevision: HEAD
