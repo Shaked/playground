@@ -27,7 +27,7 @@ spec:
                 operator: |-
                     {{ ternary "In" "NotIn" (and (hasKey . "cluster") (hasKey .cluster "name")) }}
                 values:
-                  - '{{ if (and (hasKey . "clusters") (hasKey .clusters .name)) }}{{.cluster.name}}{{ else }}will__never__match{{ end }}'
+                  - '{{ if (and (hasKey . "clusters") (hasKey .clusters "dev04")) }}{{index .clusters .name}}{{ else }}will__never__match{{ end }}'
               - key: cloud-provider
                 operator: |-
                   {{ if hasPrefix "!" (dig "cloudProvider" "!" .) }}NotIn{{ else }}In{{ end }}

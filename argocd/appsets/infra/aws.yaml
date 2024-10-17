@@ -1,0 +1,63 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: infra-aws
+  namespace: argocd
+spec:
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
+  generators:
+  - matrix:
+      generators:
+      - git:
+          repoURL: https://github.com/Shaked/playground
+          revision: main
+          files:
+            - path: argocd/appsets/infra/cluster-labels/aws/**/argo.yaml
+          values:
+            cloudProvider: '{{ index .path.segments 4 }}'
+            packageName: '{{ index .path.segments 5 }}'
+            environment: '{{ index .path.segments 6 }}'
+            appsetName: 'infra-aws'
+      - clusters:
+          selector:
+            matchLabels:
+              argocd.argoproj.io/secret-type: cluster
+              cloud-provider: '{{ .values.cloudProvider }}'
+              environment: '{{ .values.environment }}'
+          values:
+            region: '{{ index .metadata.labels "region" }}'
+  template:
+    metadata:
+      name: 'infra-{{ .name }}-{{ .packageName }}-{{ .values.cloudProvider }}'
+      labels:
+        environment: '{{ index .metadata.labels "environment" }}'
+        region: '{{ index .metadata.labels "region" }}'
+        cloud-provider: '{{ .values.cloudProvider }}'
+        appset-name: '{{ .values.appsetName }}'
+    spec:
+      project: "infra"
+      sources:
+      - repoURL: "{{ .repoUrl }}"
+        chart: '{{ .values.packageName }}'
+        targetRevision: "{{ .version }}"
+        helm:
+          releaseName: '{{ dig "releaseName" (printf "%s" (.values.packageName)) . }}'
+          ignoreMissingValueFiles: true
+          valueFiles:
+          - '$values/values/infra/{{ .values.packageName }}/values.yaml'
+          - '$values/values/infra/{{ .values.packageName }}/{{ .values.environment }}.yaml'
+          - '$values/values/infra/{{ .values.packageName }}/{{ .values.cloudProvider }}.yaml'
+          - '$values/values/infra/{{ .values.packageName }}/{{ .name }}.yaml'
+      - repoURL: 'https://github.com/Shaked/playground.git'
+        targetRevision: HEAD
+        ref: values
+      destination:
+        server: "{{ .server }}"
+        namespace: '{{ dig "namespace" (printf "%s" (.values.packageName)) . }}'
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+        - CreateNamespace=true

@@ -1,4 +1,0 @@
-cloudProvider: aws
-clusters:
-  default: false
-  dev04: true
