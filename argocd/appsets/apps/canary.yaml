@@ -57,9 +57,9 @@ spec:
         server: "{{ .server }}"
         namespace: '{{ dig "namespace" (printf "%s" (.values.product)) . }}'
       syncPolicy:
+        preserveResourcesOnDeletion: true
         automated:
           prune: true
           selfHeal: true
-          preserveResourcesOnDeletion: true
         syncOptions:
         - CreateNamespace=true
