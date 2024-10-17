@@ -13,11 +13,11 @@ spec:
           repoURL: https://github.com/Shaked/playground
           revision: main
           files:
-            - path: argocd/appsets/apps/cluster-labels/config/**/argo.yaml
+            - path: argocd/appsets/apps/cluster-labels/**/argo.yaml
           values:
-            product: '{{ index .path.segments 5 }}'
-            packageName: '{{ index .path.segments 6 }}'
-            environment: '{{ index .path.segments 7 }}'
+            product: '{{ index .path.segments 4 }}'
+            packageName: '{{ index .path.segments 5 }}'
+            environment: '{{ index .path.segments 6 }}'
             appsetName: 'apps-app1'
       - clusters:
           selector:
@@ -31,7 +31,7 @@ spec:
       labels:
         product: '{{ .values.product }}'
         packageName: '{{ .values.packageName }}'
-        environment: '{{ .Values.environment }}'
+        environment: '{{ .values.environment }}'
         region: '{{ index .metadata.labels "region" }}'
         appset-name: '{{ .values.appsetName }}'
     spec:
