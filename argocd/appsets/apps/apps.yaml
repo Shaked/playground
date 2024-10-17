@@ -45,9 +45,9 @@ spec:
           ignoreMissingValueFiles: true
           valueFiles:
           - '$values/values/apps/{{ .values.product }}/{{ .values.packageName }}/values.yaml'
-          - '$values/values/apps/{{ .values.product }}/{{ .values.packageName }}/{{ .values.environment }}.yaml'
-          - '$values/values/apps/{{ .values.product }}/{{ .values.packageName }}/{{ index .metadata.labels "region" }}.yaml'
-          - '$values/values/apps/{{ .values.product }}/{{ .values.packageName }}/{{ .name }}.yaml'
+          - '$values/values/apps/{{ .values.product }}/{{ .values.packageName }}/{{ .values.environment }}/values.yaml'
+          - '$values/values/apps/{{ .values.product }}/{{ .values.packageName }}/{{ .values.environment }}/{{ index .metadata.labels "region" }}/values.yaml'
+          - '$values/values/apps/{{ .values.product }}/{{ .values.packageName }}/{{ .values.environment }}/{{ index .metadata.labels "region" }}/{{ .name }}/values.yaml'
       - repoURL: '{{ .repoUrl }}'
         targetRevision: "{{ .version }}"
         ref: values
