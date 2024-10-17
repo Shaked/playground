@@ -15,19 +15,17 @@ spec:
           files:
             - path: argocd/appsets/infra/cluster-labels/common/**/argo.yaml
           values:
-            packageName: '{{ index .path.segments 4 }}'
-            environment: '{{ index .path.segments 5 }}'
+            packageName: '{{ index .path.segments 5 }}'
+            environment: '{{ index .path.segments 6 }}'
             appsetName: 'infra-common'
       - clusters:
           selector:
             matchLabels:
               argocd.argoproj.io/secret-type: cluster
               environment: '{{ .values.environment }}'
-          values:
-            region: '{{ index .metadata.labels "region" }}'
   template:
     metadata:
-      name: 'infra-{{ .name }}-{{ .packageName }}'
+      name: 'infra-{{ .name }}-{{ .values.packageName }}'
       labels:
         environment: '{{ index .metadata.labels "environment" }}'
         region: '{{ index .metadata.labels "region" }}'
