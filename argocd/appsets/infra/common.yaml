@@ -39,9 +39,11 @@ spec:
         helm:
           releaseName: '{{ dig "releaseName" (printf "%s" (.values.packageName)) . }}'
           ignoreMissingValueFiles: true
-          valuesObject:
-            region: '{{ index .metadata.labels "region" }}'
-            clusterName: '{{ .name }}'
+          parameters:
+          - name: region
+            value: '{{ index .metadata.labels "region" }}'
+          - name: clusterName
+            value: '{{ .name }}'
           valueFiles:
           - '$values/values/infra/{{ .values.packageName }}/values.yaml'
           - '$values/values/infra/{{ .values.packageName }}/{{ .values.environment }}.yaml'
