@@ -36,12 +36,12 @@ spec:
       - repoURL: "{{ .repoUrl }}"
         chart: '{{ .values.packageName }}'
         targetRevision: "{{ .version }}"
-        valuesObject:
-          region: '{{ index .metadata.labels "region" }}'
-          clusterName: '{{ .name }}'
         helm:
           releaseName: '{{ dig "releaseName" (printf "%s" (.values.packageName)) . }}'
           ignoreMissingValueFiles: true
+          valuesObject:
+            region: '{{ index .metadata.labels "region" }}'
+            clusterName: '{{ .name }}'
           valueFiles:
           - '$values/values/infra/{{ .values.packageName }}/values.yaml'
           - '$values/values/infra/{{ .values.packageName }}/{{ .values.environment }}.yaml'
