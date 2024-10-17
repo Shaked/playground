@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: apps-app1
+  name: apps
   namespace: argocd
 spec:
   goTemplate: true
@@ -18,7 +18,7 @@ spec:
             product: '{{ index .path.segments 4 }}'
             packageName: '{{ index .path.segments 5 }}'
             environment: '{{ index .path.segments 6 }}'
-            appsetName: 'apps-app1'
+            appsetName: 'apps'
       - clusters:
           selector:
             matchLabels:
@@ -35,13 +35,13 @@ spec:
         region: '{{ index .metadata.labels "region" }}'
         appset-name: '{{ .values.appsetName }}'
     spec:
-      project: "apps"
+      project: "{{ .values.appsetName }}"
       sources:
       - repoURL: "{{ .repoUrl }}"
         targetRevision: "{{ .version }}"
         path: "charts/apps/{{ .values.product }}/{{ .values.packageName }}"
         helm:
-          releaseName: '{{ dig "releaseName" (printf "%s" (.values.packageName)) . }}'
+          releaseName: '{{ dig "releaseName" (printf "%s-%s" (.values.product) (.values.packageName)) . }}'
           ignoreMissingValueFiles: true
           valueFiles:
           - '$values/values/apps/{{ .values.product }}/{{ .values.packageName }}/values.yaml'
@@ -53,7 +53,7 @@ spec:
         ref: values
       destination:
         server: "{{ .server }}"
-        namespace: '{{ dig "namespace" (printf "%s" (.values.packageName)) . }}'
+        namespace: '{{ dig "namespace" (printf "%s" (.values.product)) . }}'
       syncPolicy:
         automated:
           prune: true
