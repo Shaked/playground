@@ -48,8 +48,8 @@ spec:
           - '$values/values/apps/{{ .values.product }}/{{ .values.packageName }}/{{ .values.environment }}.yaml'
           - '$values/values/apps/{{ .values.product }}/{{ .values.packageName }}/{{ index .metadata.labels "region" }}.yaml'
           - '$values/values/apps/{{ .values.product }}/{{ .values.packageName }}/{{ .name }}.yaml'
-      - repoURL: 'https://github.com/Shaked/playground.git'
-        targetRevision: HEAD
+      - repoURL: '{{ .repoUrl }}'
+        targetRevision: "{{ .version }}"
         ref: values
       destination:
         server: "{{ .server }}"
