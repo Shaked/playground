@@ -23,6 +23,7 @@ spec:
           selector:
             matchLabels:
               argocd.argoproj.io/secret-type: cluster
+              cluster-purpose: '{{ .values.clusterPurpose }}'
               environment: '{{ .values.environment }}'
   template:
     metadata:

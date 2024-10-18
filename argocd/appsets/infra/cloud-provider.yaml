@@ -25,6 +25,7 @@ spec:
             matchLabels:
               argocd.argoproj.io/secret-type: cluster
               cloud-provider: '{{ .values.cloudProvider }}'
+              cluster-purpose: '{{ .values.clusterPurpose }}'
               environment: '{{ .values.environment }}'
   template:
     metadata:
