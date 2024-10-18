@@ -16,7 +16,8 @@ spec:
             - path: argocd/appsets/infra/cluster-labels/config/**/argo.yaml
           values:
             packageName: '{{ index .path.segments 5 }}'
-            environment: '{{ index .path.segments 6 }}'
+            clusterPurpose: '{{ index .path.segments 6 }}'
+            environment: '{{ index .path.segments 7 }}'
             appsetName: 'infra-config'
       - clusters:
           selector:
@@ -27,6 +28,7 @@ spec:
     metadata:
       name: 'infra-{{ .name }}-{{ .values.packageName }}'
       labels:
+        cluster-purpose: '{{ .values.clusterPurpose }}'
         environment: '{{ index .metadata.labels "environment" }}'
         region: '{{ index .metadata.labels "region" }}'
         appset-name: '{{ .values.appsetName }}'
@@ -41,9 +43,10 @@ spec:
           ignoreMissingValueFiles: true
           valueFiles:
           - '$values/values/infra/{{ .values.packageName }}/values.yaml'
-          - '$values/values/infra/{{ .values.packageName }}/{{ .values.environment }}.yaml'
-          - '$values/values/infra/{{ .values.packageName }}/{{ index .metadata.labels "region" }}.yaml'
-          - '$values/values/infra/{{ .values.packageName }}/{{ .name }}.yaml'
+          - '$values/values/infra/{{ .values.packageName }}/{{ .values.clusterPurpose }}/values.yaml'
+          - '$values/values/infra/{{ .values.packageName }}/{{ .values.clusterPurpose }}/{{ .values.environment }}/values.yaml'
+          - '$values/values/infra/{{ .values.packageName }}/{{ .values.clusterPurpose }}/{{ .values.environment }}/{{ index .metadata.labels "region" }}/values.yaml'
+          - '$values/values/infra/{{ .values.packageName }}/{{ .values.clusterPurpose }}/{{ .values.environment }}/{{ index .metadata.labels "region" }}/{{ .name }}/values.yaml'
       - repoURL: 'https://github.com/Shaked/playground.git'
         targetRevision: HEAD
         ref: values

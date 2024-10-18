@@ -13,8 +13,9 @@ spec:
           repoURL: https://github.com/Shaked/playground
           revision: main
           files:
-            - path: argocd/appsets/apps/cluster-labels/stable/**/argo.yaml
+            - path: argocd/appsets/apps/cluster-labels/**/argo.yaml
           values:
+            tier: '{{ index .path.segments 4 }}'
             product: '{{ index .path.segments 5 }}'
             packageName: '{{ index .path.segments 6 }}'
             environment: '{{ index .path.segments 7 }}'
@@ -23,8 +24,9 @@ spec:
           selector:
             matchLabels:
               argocd.argoproj.io/secret-type: cluster
+              tier: '{{ .values.tier }}'
               environment: '{{ .values.environment }}'
-              argocd.argoproj.io/product-{{ .values.product }}: '{{ dig "enabled" (true) . }}'
+              product-{{ .values.product }}: '{{ dig "enabled" (true) . }}'
   template:
     metadata:
       name: 'apps-{{ .name }}-{{ .values.product }}-{{ .values.packageName }}'

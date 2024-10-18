@@ -17,7 +17,8 @@ spec:
           values:
             cloudProvider: '{{ index .path.segments 5 }}'
             packageName: '{{ index .path.segments 6 }}'
-            environment: '{{ index .path.segments 7 }}'
+            clusterPurpose: '{{ index .path.segments 7 }}'
+            environment: '{{ index .path.segments 8 }}'
             appsetName: 'infra-cloud-provider'
       - clusters:
           selector:
@@ -29,9 +30,10 @@ spec:
     metadata:
       name: 'infra-{{ .name }}-{{ .values.packageName }}-{{ .values.cloudProvider }}'
       labels:
+        cloud-provider: '{{ .values.cloudProvider }}'
+        cluster-purpose: '{{ .values.clusterPurpose }}'
         environment: '{{ index .metadata.labels "environment" }}'
         region: '{{ index .metadata.labels "region" }}'
-        cloud-provider: '{{ .values.cloudProvider }}'
         appset-name: '{{ .values.appsetName }}'
     spec:
       project: "infra"
@@ -44,9 +46,11 @@ spec:
           ignoreMissingValueFiles: true
           valueFiles:
           - '$values/values/infra/{{ .values.packageName }}/values.yaml'
-          - '$values/values/infra/{{ .values.packageName }}/{{ .values.environment }}.yaml'
-          - '$values/values/infra/{{ .values.packageName }}/{{ .values.cloudProvider }}.yaml'
-          - '$values/values/infra/{{ .values.packageName }}/{{ .name }}.yaml'
+          - '$values/values/infra/{{ .values.packageName }}/{{ .values.clusterPurpose }}/values.yaml'
+          - '$values/values/infra/{{ .values.packageName }}/{{ .values.clusterPurpose }}/{{ .values.environment }}/values.yaml'
+          - '$values/values/infra/{{ .values.packageName }}/{{ .values.clusterPurpose }}/{{ .values.environment }}/{{ .values.cloudProvider }}/values.yaml'
+          - '$values/values/infra/{{ .values.packageName }}/{{ .values.clusterPurpose }}/{{ .values.environment }}/{{ .values.cloudProvider }}/{{ index .metadata.labels "region" }}/values.yaml'
+          - '$values/values/infra/{{ .values.packageName }}/{{ .values.clusterPurpose }}/{{ .values.environment }}/{{ .values.cloudProvider }}/{{ index .metadata.labels "region" }}/{{ .name }}/values.yaml'
       - repoURL: 'https://github.com/Shaked/playground.git'
         targetRevision: HEAD
         ref: values
